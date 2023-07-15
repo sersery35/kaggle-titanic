@@ -14,25 +14,32 @@ cachetools==5.3.1
 certifi==2023.5.7
 cffi==1.15.1
 charset-normalizer==3.1.0
+click==8.1.4
 comm==0.1.3
 contourpy==1.1.0
 cycler==0.11.0
+dacite==1.8.1
 debugpy==1.6.7
 decorator==5.1.1
 defusedxml==0.7.1
 exceptiongroup==1.1.2
 executing==1.2.0
 fastjsonschema==2.17.1
+filelock==3.12.2
 flatbuffers==23.5.26
 fonttools==4.40.0
 fqdn==1.5.1
+fsspec==2023.6.0
 gast==0.4.0
 google-auth==2.21.0
 google-auth-oauthlib==1.0.0
 google-pasta==0.2.0
 grpcio==1.56.0
 h5py==3.9.0
+htmlmin==0.1.12
+huggingface-hub==0.16.4
 idna @ file:///home/conda/feedstock_root/build_artifacts/idna_1663625384323/work
+ImageHash==4.3.1
 importlib-metadata==6.7.0
 importlib-resources==5.12.0
 ipykernel==6.24.0
@@ -64,11 +71,14 @@ matplotlib==3.7.1
 matplotlib-inline==0.1.6
 mistune==3.0.1
 ml-dtypes==0.2.0
+multimethod==1.9.1
 nbclassic==1.0.0
 nbclient==0.8.0
 nbconvert==7.6.0
 nbformat==5.9.0
 nest-asyncio==1.5.6
+networkx==3.1
+nltk==3.8.1
 notebook==6.5.4
 notebook_shim==0.2.3
 numpy==1.23.5
@@ -79,7 +89,9 @@ packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_16813370
 pandas==2.0.3
 pandocfilters==1.5.0
 parso==0.8.3
+patsy==0.5.3
 pexpect==4.8.0
+phik==0.12.3
 pickleshare==0.7.5
 Pillow==10.0.0
 platformdirs==3.8.0
@@ -93,6 +105,7 @@ pure-eval==0.2.2
 pyasn1==0.5.0
 pyasn1-modules==0.3.0
 pycparser==2.21
+pydantic==1.10.11
 Pygments==2.15.1
 pyparsing==3.1.0
 pyrsistent==0.19.3
@@ -100,24 +113,29 @@ PySocks @ file:///home/conda/feedstock_root/build_artifacts/pysocks_166160483914
 python-dateutil==2.8.2
 python-json-logger==2.0.7
 pytz==2023.3
+PyWavelets==1.4.1
 PyYAML==6.0
 pyzmq==25.1.0
 qtconsole==5.4.3
 QtPy==2.3.1
+regex==2023.6.3
 requests @ file:///home/conda/feedstock_root/build_artifacts/requests_1684774241324/work
 requests-oauthlib==1.3.1
 rfc3339-validator==0.1.4
 rfc3986-validator==0.1.1
 rsa==4.9
 scikit-learn @ file:///home/conda/feedstock_root/build_artifacts/scikit-learn_1688116536079/work
-scipy @ file:///home/conda/feedstock_root/build_artifacts/scipy-split_1687995569849/work/base/dist/scipy-1.11.1-cp39-cp39-linux_x86_64.whl#sha256=ce8b1a8805b00d339725a3e23ea4016799b2ca8907abea3972db469bc1ecf32e
+scipy==1.10.1
 seaborn==0.12.2
 Send2Trash==1.8.2
 six==1.16.0
+skops==0.8.0
 sniffio==1.3.0
 soupsieve==2.4.1
 stack-data==0.6.2
+statsmodels==0.14.0
 tabulate==0.9.0
+tangled-up-in-unicode==0.2.0
 tensorboard==2.12.3
 tensorboard-data-server==0.7.1
 tensorflow==2.12.0
@@ -129,18 +147,24 @@ terminado==0.17.1
 threadpoolctl @ file:///home/conda/feedstock_root/build_artifacts/threadpoolctl_1643647933166/work
 tinycss2==1.2.1
 tornado==6.3.2
+tqdm==4.65.0
 traitlets==5.9.0
+typeguard==2.13.3
 typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_extensions_1688315532570/work
 tzdata==2023.3
+Unidecode==1.3.6
 uri-template==1.3.0
 urllib3==1.26.16
+visions==0.7.5
 wcwidth==0.2.6
 webcolors==1.13
 webencodings==0.5.1
 websocket-client==1.6.1
 Werkzeug==2.3.6
 widgetsnbextension==4.0.7
+wordcloud==1.9.2
 wrapt==1.14.1
 wurlitzer==3.0.3
 xgboost==1.7.4
+ydata-profiling==4.3.1
 zipp==3.15.0
