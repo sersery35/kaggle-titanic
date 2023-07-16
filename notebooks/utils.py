@@ -8,12 +8,15 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 from string import punctuation
 import unidecode
+import seaborn as sns
 
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import RandomizedSearchCV, GridSearchCV
 
-from skops.io import dump, load
+
+from skops.io import dump as sk_dump, load as sk_load
 
 import pickle
 
@@ -62,7 +65,8 @@ def preprocess_dataframe(
         fill_na: bool = True,
         enable_categorical: bool = True,
         encoder=LabelEncoder(),
-        test_split: Optional[float] = 0.2) -> pd.DataFrame:
+        test_split: Optional[float] = 0.2,
+        drop_duplicates: bool = False) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     df = dataframe.copy()
     features = input_features.copy()
     categorical_cols = get_categorical_columns()
@@ -78,14 +82,20 @@ def preprocess_dataframe(
         features.remove('Ticket')
 
     # these are bool types
-    df['Has_Sibsp'] = (df['SibSp'] > 0).astype(int)
+    df['Has_Sibsp'] = (df['SibSp'] > 0)
     features.append('Has_Sibsp')
     if 'Sibling' in features:
         features.remove('Sibling')
-    df['Has_Parch'] = (df['Parch'] > 0).astype(int)
+    df['Has_Parch'] = (df['Parch'] > 0)
     features.append('Has_Parch')
     if 'Parch' in features:
         features.remove('Parch')
+    df['Has_Family'] = (df['Has_Sibsp'] | df['Has_Parch'])
+    features.append('Has_Family')
+
+    for col in ['Has_Sibsp', 'Has_Parch', 'Has_Family']:
+        df[col] = df[col].astype(
+            'category' if enable_categorical else int)
 
     for col in categorical_cols:
         if col in df.columns:
@@ -128,6 +138,12 @@ def preprocess_dataframe(
         return scale_columns(df[features], cols_to_scale, scaler)
     else:
         return df[features]
+
+    if drop_duplicates:
+        duplicate_indexes = pd.concat([X_train, y_train], axis=1).duplicated()
+        X_train = X_train[~duplicate_indexes]
+        y_train = y_train[~duplicate_indexes]
+
     return X_train, y_train, X_val, y_val
 
 
@@ -136,6 +152,36 @@ def scale_columns(df, cols, scaler):
     for col in cols:
         df[col] = scaler.fit_transform(df[col].to_numpy().reshape(-1, 1))
     return df
+
+
+def get_tuner(estimator, param_distributions: dict, use_random_search: bool = False):
+    if use_random_search:
+        return RandomizedSearchCV(
+            estimator=estimator,
+            param_distributions=param_distributions,
+            cv=5,
+            n_iter=10,
+            return_train_score=True,
+            random_state=42,
+        )
+    else:
+        return GridSearchCV(
+            estimator=estimator,
+            param_grid=param_distributions,
+            return_train_score=True,
+            cv=5
+        )
+
+
+def print_scores(model, train_X, train_y, val_X, val_y):
+    train_score = model.score(train_X, train_y)
+    val_score = model.score(val_X, val_y)
+    print(f'Train Score: {train_score}\nVal score: {val_score}')
+    return train_score, val_score
+
+
+def visualize_loss_curve(history: list):
+    sns.lineplot(x=range(len(history)), y=history)
 
 
 def save_model(model, model_name: str):
@@ -152,12 +198,12 @@ def load_model(model_name: str):
 
 def save_scikit_model(model, model_name: str):
     model_dir = '../models/'
-    dump(model, os.path.join(model_dir, f'{model_name}.skops'))
+    sk_dump(model, os.path.join(model_dir, f'{model_name}.skops'))
 
 
 def load_scikit_model(model_name: str):
     model_dir = '../models/'
-    return load(os.path.join(model_dir, f'{model_name}.skops'))
+    return sk_load(os.path.join(model_dir, f'{model_name}.skops'))
 
 
 class TextPreprocessor:
